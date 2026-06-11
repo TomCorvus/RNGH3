@@ -3,36 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView, Pressable  } from 'react-native-gesture-handler';
 import Animated, {useAnimatedStyle, useDerivedValue, withTiming,useSharedValue} from 'react-native-reanimated';
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
-
 export default function App() {
-
-  	const pressed = useSharedValue(false)
-
-	const opacity = useDerivedValue(() => {
-		return pressed.value
-			? withTiming(0.8, { duration: 120 })
-			: withTiming(1, { duration: 150 })
-	})
-
-	const scale = useDerivedValue(() =>
-		pressed.value
-			? withTiming(0.985, { duration: 120 })
-			: withTiming(1, { duration: 150 }),
-	)
-
-	const animatedStyle = useAnimatedStyle(() => ({
-		opacity: opacity.value,
-		transform: [{ scale: scale.value }],
-	}))
-
-	const handlePressIn = () => {
-		pressed.value = true
-	}
-	const handlePressOut = () => {
-		pressed.value = false
-	}
-
 
 
   return (
@@ -40,8 +11,15 @@ export default function App() {
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
-      <AnimatedPressable onPress={()=> console.log("pressed")} style={animatedStyle} onPressIn={handlePressIn}
-			onPressOut={handlePressOut}><Text>Click</Text></AnimatedPressable>
+
+	  <View style={{position: "relative"}}>
+		<View style={{backgroundColor: "magenta", padding: 20, position: "absolute", top: 0, right: 0, zIndex: 1 }} />
+   	 	<Pressable onPress={()=> console.log("pressed")} style={{backgroundColor: "cyan", padding: 20, zIndex: 2 }}>
+			<Text>Click</Text>
+		</Pressable>
+		<View style={{backgroundColor: "yellow", padding: 20, position: "absolute", top: 0, left: 0, zIndex: 3 }} />
+	  </View>
+  
     </View>
     </GestureHandlerRootView>
   );
